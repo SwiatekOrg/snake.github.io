@@ -4,67 +4,92 @@ AllTiles.forEach((row,i)=>{
   AllTiles[i] = [...row.querySelectorAll('.snake-item')]
 })
 
-const snakePositions = []
-let snakeActualyPosition = [5,5]
-let direction = 38;
+const snakePositions = [[5,5]]
+let direction = 'gora';
+let isEaten = false;
+let pointPosition = [];
+
+const eat = () =>{
+  if(isEaten){
+
+
+    isEaten = false;
+  }
+
+
+  if(snakeActualyPosition == pointPosition){
+    isEaten = true;
+    drawPoint()
+  }
+}
 
 const drawSnake = () => {
-  AllTiles.forEach(row=>{
-    row.forEach(item=>{
-      item.classList.remove('snake-head')
-      item.classList.remove('snake-body')
-    })
+  snakePositions.forEach(pos=>{
+    AllTiles[pos[0]][pos[1]].classList.remove('snake-body')
   })
-
+  console.log(snakePositions)
   snakePositions.forEach(cords=>{
-    if(cords === snakePositions[0]) AllTiles[cords[0]][cords[1]].classList.add('snake-head')
-    else AllTiles[cords[0]][cords[1]].classList.add('snake-body')
+    AllTiles[cords[0]][cords[1]].classList.add('snake-body')
   })
 }
 
-
 const snakeMove = () => {
  switch (direction) {
-    case 38:
+    case 'gora':
     snakeActualyPosition[1] -=1;
     break;
-    case 40:
+    case 'dol':
     snakeActualyPosition[1] +=1;
     break;
-    case 37:
+    case 'lewo':
     snakeActualyPosition[0] -=1;
     break;
-    case 39:
+    case 'prawo':
     snakeActualyPosition[0] +=1;
     break;
  }
- console.log(direction)
  for(let i = 0;i<snakeActualyPosition.length;i++){
    snakeActualyPosition[i] = snakeActualyPosition[i] < 0 ? 9 : snakeActualyPosition[i];
-   snakeActualyPosition[i] = snakeActualyPosition[i] > 9 ? snakeActualyPosition[i] % 9: snakeActualyPosition[i];
+   snakeActualyPosition[i] = snakeActualyPosition[i] > 9 ? snakeActualyPosition[i] % 10: snakeActualyPosition[i];
  }
- snakePositions.shift('')
- snakePositions.unshift(snakeActualyPosition)
+
+}
+
+const drawPoint = () =>{
+  try {
+  document.querySelector('.point').classList.remove('point')
+  }catch(TypeError){}
+  pointPosition = [Math.floor(Math.random()*10),Math.floor(Math.random()*10)]
+
+  for(let pos of snakePositions){
+    if(pointPosition === pos){
+      drawPoint()
+      break
+    }
+  }
+  AllTiles[pointPosition[0]][pointPosition[1]].classList.add('point')
 }
 
 window.addEventListener('keydown',e=>{
   switch (e.keyCode) {
+      case 38:
+      direction = 'gora';
+      break;
       case 40:
-      direction = 40;
+      direction = 'dol';
       break;
       case 37:
-      direction = 37;
+      direction = 'lewo';
       break;
       case 39:
-      direction = 39;
-      break;
-      case 38:
-      direction = 38;
+      direction = 'prawo';
       break;
   }
-  console.log(direction)
 })
 
 
- setInterval(snakeMove,1000)
- setInterval(drawSnake,1000)
+  setTimeout(drawPoint,500)
+
+  setInterval(snakeMove,500)
+  setInterval(eat,500)
+  setInterval(drawSnake,500)

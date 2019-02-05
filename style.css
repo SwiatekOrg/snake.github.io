@@ -36,3 +36,7 @@ body{
 .snake-item.snake-head{
   background-color: black;
 }
+
+.snake-item.point{
+  background-color: red;
+}
