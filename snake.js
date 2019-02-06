@@ -175,7 +175,22 @@ const Game = () =>{
   keydownFlag = false;
 }
 
-let GameInterval = setInterval(Game,frequency)
+const switching = document.querySelector('.switch')
 
-  
-  
+const whiteBtn = document.getElementById('white')
+whiteBtn.addEventListener('click',()=>{
+  document.body.style.backgroundColor = "white"
+  container.style.borderColor = "black"
+  document.body.style.color = "black"
+  switching.style.boxShadow = "0 0 0 5px black"
+})
+
+const blackBtn = document.getElementById('black')
+blackBtn.addEventListener('click',()=>{
+  document.body.style.backgroundColor = "black"
+  container.style.borderColor = "white"
+  document.body.style.color = "white"
+  switching.style.boxShadow = "0 0 0 5px white"
+})
+
+let GameInterval = setInterval(Game,frequency)
