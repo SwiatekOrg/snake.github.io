@@ -91,7 +91,7 @@ const drawPoint = () =>{
   pointY = Math.floor(Math.random()*areaY)
 
   for(let pos of snakePositions){
-    if([pointX,pointY] === pos){
+    if(pointX === pos[0] && pointY === pos[1]){
       drawPoint()
       break
     }
